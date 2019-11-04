@@ -2,6 +2,8 @@
 #include<conio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<windows.h>
+#include<time.h>
 static int i=0;
 struct minor
 {
@@ -58,11 +60,16 @@ int main()
     check = checkpass(sap,password,p);
     if(check==0)
     {
-        printf("You are in");
+        printf("Login Successful...");
+        Sleep(2000);
+        system("cls");
+        int blockres= funcblock();
     }
     else
     {
         printf("You entered wrong details");
+        Sleep(2000);
+        login();
     }
 
     }
@@ -126,3 +133,49 @@ int checkpass(char sap[10], char pass[50],int p)
     }
 
 }
+int funcblock()
+{
+    setup();
+    FILE *fp;
+    fp=fopen("block.txt","r+");
+    int b,i=11;
+    char ch;
+    int flag = 1;
+    char block[20];
+    printf("Enter the integer value for relevant block number where the issue is\nBlock:");
+    while( !feof(fp) )
+        {
+            ch = fgetc(fp);
+            if(ch==';')
+                {
+                    flag = 0;
+                }
+            if(flag==1)
+            {
+                printf("%c",ch);
+            }
+            else if(ch=='\n')
+            {
+                flag = 1;
+                printf("\nBlock:");
+            }
+            else
+                continue;
+        }
+    printf("\n ");
+    here:
+    scanf("%d",&b);
+    if(b>0 && b<=11)
+    {
+        printf("You selected block %d",b);
+    }
+    else
+    {
+        printf("No such block found. Please enter correct block number\n");
+        goto here;
+    }
+    return b;
+
+
+}
+
