@@ -10,8 +10,6 @@ struct minor
 char name[30];
 }w[99];
 int n;
-void login(void);
-void reg(void);
 void setup()
 {
     system("cls");
@@ -21,13 +19,18 @@ void setup()
 }
 int main()
 {
-    login();
+    int block_res,floor_res;
+    block_res = login();
+    floor_res= floor(block_res);
+    system("cls");
+    printf("%d",floor_res);
     return 0;
 
 }
 
-    void login()
+    int login()
     {
+        a: ;
         int check;
         char sap[10];
         char password[50],ch;
@@ -63,13 +66,14 @@ int main()
         printf("Login Successful...");
         Sleep(2000);
         system("cls");
-        int blockres= funcblock();
+        int blockres = funcblock();
+        return blockres;
     }
     else
     {
         printf("You entered wrong details");
         Sleep(2000);
-        login();
+        goto a;
     }
 
     }
@@ -178,4 +182,48 @@ int funcblock()
 
 
 }
+int floor(int block)
+{
+    FILE *fp;
+    fp=fopen("block.txt","r+");
+    char ch;
+    int f,floor;
+    printf("\nENTER FLOOR NUMBER");
+    while( !feof(fp) )
+    {
+        here:
+        ch=fgetc(fp);
+        if(ch==block)
+        {
+            while( !feof(fp) )
+            {
+                if(ch==';')
+                {
+                    fseek(fp,1,SEEK_CUR);
+                    f=(int)ch;
+                    for(int i=0;i<=f;i++)
+                    {
+                        printf("\nFLOOR:%d",i);
+                    }
+                    break;
+                }
 
+            }
+
+            break;
+        }
+        else{
+            while( !feof(fp) )
+            {
+
+                if(ch=='\n')
+                {
+                    goto here;
+                }
+            }
+        }
+        scanf("\n%d",&floor);
+        return floor;
+
+    }
+}
