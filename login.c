@@ -19,11 +19,12 @@ void setup()
 }
 int main()
 {
-    int block_res,floor_res;
+    int block_res,floor_res,classroom;
     block_res = login();
-    floor_res= floor_cus(block_res);
+    floor_res= floor_cus(block_res,&classroom);
     system("cls");
     printf("%d",floor_res);
+    printf("\n%d",classroom);
     return 0;
 
 }
@@ -183,7 +184,7 @@ int funcblock()
 
 
 }
-int floor_cus(int block)
+int floor_cus(int block,int* classroom)
 {
     setup();
     FILE *fp;
@@ -229,6 +230,11 @@ int floor_cus(int block)
         }
         }
         printf("\n");
+        fseek(fp,1,SEEK_CUR);
+        ch=fgetc(fp);
+        int classes=(int)ch;
+        classes-=48;
+        *classroom=classes;
         scanf("%d",&floor);
         return floor;
 
