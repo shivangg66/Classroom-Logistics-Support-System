@@ -10,8 +10,6 @@ struct minor
 char name[30];
 }w[99];
 int n;
-void login(void);
-void reg(void);
 void setup()
 {
     system("cls");
@@ -21,16 +19,22 @@ void setup()
 }
 int main()
 {
-    login();
+    int block_res,floor_res;
+    block_res = login();
+    floor_res= floor_cus(block_res);
+    system("cls");
+    printf("%d",floor_res);
     return 0;
 
 }
 
-    void login()
+    int login()
     {
+
         int check;
         char sap[10];
         char password[50],ch;
+        a:
         system("cls");
         setup();
         printf("Enter your sap id: ");
@@ -63,13 +67,14 @@ int main()
         printf("Login Successful...");
         Sleep(2000);
         system("cls");
-        int blockres= funcblock();
+        int blockres = funcblock();
+        return blockres;
     }
     else
     {
         printf("You entered wrong details");
         Sleep(2000);
-        login();
+        goto a;
     }
 
     }
@@ -175,6 +180,57 @@ int funcblock()
         goto here;
     }
     return b;
+
+
+}
+int floor_cus(int block)
+{
+    setup();
+    FILE *fp;
+    fp=fopen("block.txt","r+");
+    char ch;
+    int f,floor,b;
+    printf("\nENTER FLOOR NUMBER\n");
+    while( !feof(fp) )
+    {
+        here:
+        ch=fgetc(fp);
+        b=(int)(ch);
+        b=b-48;
+        if(b==block)
+        {
+            while( !feof(fp) )
+            {
+                ch=fgetc(fp);
+                if(ch==';')
+                {
+                    ch=fgetc(fp);
+                    f=(int)ch;
+                    f=f-48;
+                    for(int i=0;i<=f;i++)
+                    {
+                        printf("\nFLOOR:%d",i);
+                    }
+                    break;
+                }
+
+            }
+            break;
+        }
+        else{
+            while( !feof(fp) )
+            {
+                ch=fgetc(fp);
+                if(ch=='\n')
+                {
+                    goto here;
+                }
+            }
+        }
+        }
+        printf("\n");
+        scanf("%d",&floor);
+        return floor;
 
 
 }
