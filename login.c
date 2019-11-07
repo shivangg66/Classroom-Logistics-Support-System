@@ -186,49 +186,62 @@ int funcblock()
 }
 int floor_cus(int block,int* classroom)
 {
-    setup();
     FILE *fp;
     fp=fopen("block.txt","r+");
     char ch;
+    int i=0;
+    char bl[4];
     int f,floor,b;
     printf("\nENTER FLOOR NUMBER\n");
     while( !feof(fp) )
     {
         here:
         ch=fgetc(fp);
-        b=(int)(ch);
-        b=b-48;
-        if(b==block)
+
+        if(ch==';')
         {
+            bl[i]='\0';
+            sscanf(bl, "%d", &b);
+            if(b==block)
+            {
             while( !feof(fp) )
             {
                 ch=fgetc(fp);
-                if(ch==';')
-                {
-                    ch=fgetc(fp);
+
                     f=(int)ch;
                     f=f-48;
+
                     for(int i=0;i<=f;i++)
                     {
                         printf("\nFLOOR:%d",i);
                     }
                     break;
-                }
+
 
             }
             break;
-        }
-        else{
-            while( !feof(fp) )
-            {
-                ch=fgetc(fp);
-                if(ch=='\n')
+        }else
+        {
+
+            while(!feof(fp))
                 {
-                    goto here;
+                    ch = fgetc(fp);
+                    if(ch=='\n')
+                    {
+                        bl[0]='\0';
+                        i=0;
+                        goto here;
+                    }
                 }
-            }
         }
         }
+        else
+        {
+            strncat(bl,&ch,1);
+            i++;
+
+        }
+    }
         printf("\n");
         fseek(fp,1,SEEK_CUR);
         ch=fgetc(fp);
@@ -237,7 +250,6 @@ int floor_cus(int block,int* classroom)
         *classroom=classes;
         scanf("%d",&floor);
         return floor;
-
-
 }
+
 
