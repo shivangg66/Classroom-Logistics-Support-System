@@ -1,0 +1,10 @@
+table
+chair
+fan
+tubelight
+projector
+projector screen
+switch board
+charging plug
+card sensor
+window
