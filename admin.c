@@ -9,6 +9,7 @@ int main()
     printf("\n1. view complaints");
     printf("\n2. add inventories");
     printf("\n3. add block");
+    printf("\n4. remove solved complaint");
     printf("\n");
     scanf("%d",&a);
     switch(a)
@@ -19,21 +20,26 @@ int main()
                 break;
         case 3: add_block();
                 break;
+        case 4: remove_complaint();
+                break;
         default: printf("\nyou entered wrong choice");
 
     }
+    return 0;
 }
     void view_complaints()
     {
         FILE *fp;
         char ch[50];
-        fp=fopen("complaints.txt","r+");
+        fp=fopen("complaints.txt","r");
         printf("Complaints registered (room no,faulty inventory,description) -->\n\n ");
 
          while(!feof(fp))
         {
+             fflush(stdin);
             fgets(ch,50,fp);
             printf("%s",ch);
+
         }
     }
     void add_inventory()
@@ -51,7 +57,7 @@ int main()
             printf("%s",ch);
         }
         fclose(fp);
-        printf("How many inventories you want to add\n");
+        printf("\nHow many inventories you want to add\n");
         scanf("%d",&n);
         switch(n)
         {
@@ -61,10 +67,12 @@ int main()
                 scanf("%s",&in);
                 FILE *fp1;
                 fp1=fopen("inventories.txt","a+");
-                fprintf(fp1, "\n");
+                fprintf(fp1,"\n");
                 for(int i=0;i<strlen(in);i++)
                 {
+
                     fputc(in[i],fp1);
+                    fflush(stdin);
                 }
                 fclose(fp1);
                 printf("inventory added");
@@ -78,15 +86,18 @@ int main()
                 }
                 for(int i=0;i<n;i++)
                 {
+
                     printf("\n");
                     printf("%s",in2[i]);
+
                 }
                 FILE *fp2;
                 fp2=fopen("inventories.txt","a+");
-
+                fprintf(fp2,"\n");
                 for(int i=0;i<strlen(in2);i++)
                 {
                     fprintf(fp2,"%s\n",in2[i]);
+                    fflush(stdin);
                 }
                 fclose(fp2);
                 printf("\nInventories added");
@@ -114,6 +125,55 @@ int main()
         }
         fclose(fp);
         printf("\nBlock added successfully");
+    }
 
+    void remove_complaint()
+    {
+        FILE *fp1, *fp2;
+        char ch[100],ch1;
+        char filename[40];
+        int delete_line, temp=1;
+        fp1=fopen("complaints.txt","r");
+         while(!feof(fp1))
+        {
+
+            fgets(ch,100,fp1);
+            printf("%s",ch);
+
+        }
+
+        printf(" \n Enter line number of the line to be deleted:");
+        scanf("%d", &delete_line);
+        fp2 = fopen("replica.txt", "w");
+        rewind(fp1);
+        ch1 = getc(fp1);
+        while (ch1 != EOF)
+        {
+            ch1 = getc(fp1);
+            if (ch1 == '\n')
+                    temp++;
+            if (temp != delete_line)
+            {
+                putc(ch1, fp2);
+
+            }
+        }
+        fclose(fp1);
+        fclose(fp2);
+        remove("complaints.txt");
+        char oldname[]="replica.txt";
+        char newname[]="complaints.txt";
+        rename(oldname,newname);
+        printf("\n The contents of file after being modified are as follows:\n");
+        fp1 = fopen("complaints.txt", "r");
+         while(!feof(fp1))
+        {
+            fgets(ch,100,fp1);
+            printf("%s",ch);
+        }
+        fclose(fp1);
 
     }
+
+
+
