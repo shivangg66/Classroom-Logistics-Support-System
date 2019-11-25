@@ -186,6 +186,7 @@ int funcblock()
 }
 int floor_cus(int block,int* classroom)
 {
+    setup();
     FILE *fp;
     fp=fopen("block.txt","r+");
     char ch;
