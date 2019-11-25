@@ -1,2 +1,4 @@
 9207,fan,fan on teacher's head is not working
 9108,table
+9102,fan,null
+8204,window,broken
